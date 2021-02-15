@@ -19,8 +19,7 @@ import com.melalietest.rana.assessment.staging.RestaurantData;
  * @author anitamarsafira
  *
  */
-@Service
-@Transactional
+ 
 public interface RestaurantService {
 
 	Iterable<Restaurant> findAll();
