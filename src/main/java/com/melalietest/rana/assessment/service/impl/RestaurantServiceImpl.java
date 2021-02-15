@@ -20,11 +20,8 @@ import com.melalietest.rana.assessment.staging.RestaurantPopularData;
  */
 
 public class RestaurantServiceImpl implements RestaurantService {
-	@Autowired
 	RestaurantRepository restaurantRepo;
-//	@Autowired
 	RestaurantMenuRepository restaurantMenuRepo;
-	@Autowired
 	PurchaseRepository purchaseRepo;
 
 	@Override
@@ -74,8 +71,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Override
 	public List<RestaurantMenu> findRestaurantByPriceRange(int priceFrom, int priceTo) {
 		// TODO Auto-generated method stub
-		
-		return restaurantMenuRepo.findRestaurantByPriceRange(priceFrom,priceTo);
+
+		return restaurantMenuRepo.findRestaurantByPriceRange(priceFrom, priceTo);
 	}
 
 	@Override

@@ -28,10 +28,8 @@ import com.melalietest.rana.assessment.staging.RestaurantPopularData;
 @RestController
 @RequestMapping("/api")
 public class RestaurantController {
-	@Autowired
-	RestaurantService restaurantService;
-	@Autowired
-	CustomerService customerService;
+ 	RestaurantService restaurantService;
+ 	CustomerService customerService;
 
 	// Find all restaurant List
 	@GetMapping("/restaurants")
@@ -163,14 +161,16 @@ public class RestaurantController {
 	// Find top User by amount on spesific date
 	@GetMapping("/restaurant/customer/amount/{dateFrom}/{dateTo}/{maxcustomer}")
 
-	public ResponseEntity<CustomerData> findXUserBySpesificDate(@PathVariable("dateFrom") String dateFrom,
+	public ResponseEntity<List<CustomerData>> findXUserBySpesificDate(@PathVariable("dateFrom") String dateFrom,
 			@PathVariable("dateTo") String dateTo, @PathVariable("maxcustomer") String maxCustomer) {
-		Optional<CustomerData> restaurantData = customerService.findUserBySpesificDate(dateFrom, dateTo, maxCustomer);
+		List<CustomerData> restaurantData = customerService.findUserBySpesificDate(dateFrom, dateTo, maxCustomer);
 
-		if (restaurantData.isPresent()) {
-			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
-		} else {
+		if (restaurantData.isEmpty()) {
+
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(restaurantData, HttpStatus.OK);
+
 		}
 
 	}

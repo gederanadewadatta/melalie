@@ -20,7 +20,7 @@ import com.melalietest.rana.assessment.staging.RestaurantPopularData;
  * @author anitamarsafira
  *
  */
- 
+ @Service
 public interface RestaurantService {
 
 	Iterable<Restaurant> findAll();

@@ -1,7 +1,7 @@
 package com.melalietest.rana.assessment.staging;
 
 public class CustomerData {
-	private int customerId;
+	private long customerId;
 	private String customerName;
 	private String purchaseAmount;
 	@Override
@@ -12,13 +12,13 @@ public class CustomerData {
 	/**
 	 * @return the customerId
 	 */
-	public int getCustomerId() {
+	public long getCustomerId() {
 		return customerId;
 	}
 	/**
 	 * @param customerId the customerId to set
 	 */
-	public void setCustomerId(int customerId) {
+	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
 	}
 	/**
@@ -45,7 +45,7 @@ public class CustomerData {
 	public void setPurchaseAmount(String purchaseAmount) {
 		this.purchaseAmount = purchaseAmount;
 	}
-	public CustomerData(int customerId, String customerName, String purchaseAmount) {
+	public CustomerData(long customerId, String customerName, String purchaseAmount) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
