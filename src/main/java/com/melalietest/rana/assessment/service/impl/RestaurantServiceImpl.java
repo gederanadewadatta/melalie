@@ -12,6 +12,7 @@ import com.melalietest.rana.assessment.repository.*;
 import com.melalietest.rana.assessment.model.*;
 import com.melalietest.rana.assessment.service.RestaurantService;
 import com.melalietest.rana.assessment.staging.RestaurantData;
+import com.melalietest.rana.assessment.staging.RestaurantPopularData;
 
 /**
  * @author anitamarsafira
@@ -87,6 +88,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 	public Optional<Restaurant> findRestaurantByExactlyDishName(String name) {
 		// TODO Auto-generated method stub
 		return restaurantRepo.findRestaurantByExactlyDishName(name);
+	}
+
+	@Override
+	public Iterable<RestaurantPopularData> findByPopularRestaurant() {
+		// TODO Auto-generated method stub
+		return restaurantRepo.findByPopularRestaurant();
 	}
 
 }

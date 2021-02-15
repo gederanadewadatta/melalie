@@ -15,10 +15,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.melalietest.rana.assessment.model.*;
+import com.melalietest.rana.assessment.model.Restaurant;
+import com.melalietest.rana.assessment.model.RestaurantMenu;
+import com.melalietest.rana.assessment.model.Purchase;
+
 import com.melalietest.rana.assessment.service.CustomerService;
 import com.melalietest.rana.assessment.service.RestaurantService;
+import com.melalietest.rana.assessment.staging.CustomerData;
 import com.melalietest.rana.assessment.staging.RestaurantData;
+import com.melalietest.rana.assessment.staging.RestaurantPopularData;
 
 @RestController
 @RequestMapping("/api")
@@ -61,7 +66,7 @@ public class RestaurantController {
 	}
 
 	// Find restaurant by ID
-	@GetMapping("/restaurants/{id}")
+	@GetMapping("/restaurant/{id}")
 	public ResponseEntity<Restaurant> findRestaurantById(@PathVariable("id") long id) {
 		Optional<Restaurant> restaurantData = restaurantService.findById(id);
 
@@ -73,7 +78,7 @@ public class RestaurantController {
 	}
 
 	// Find based on Operasional Hours
-	@GetMapping("/restaurants/operasional/{datetime}")
+	@GetMapping("/restaurant/operasional/{datetime}")
 	public ResponseEntity<Restaurant> findRestaurantByOperasionalHours(@PathVariable("datetime") String datetime) {
 		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByOperasionalHours(datetime);
 
@@ -134,25 +139,57 @@ public class RestaurantController {
 
 	public ResponseEntity<RestaurantData> findRestaurantOrDishByName(@PathVariable("name") String name) {
 		Optional<RestaurantData> restaurantData = restaurantService.findRestaurantOrDishByName(name);
- 
+
 		if (restaurantData.isPresent()) {
 			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	// Find Restaurant by exactly Dish Name
-		@GetMapping("/restaurant/menu/dish/{name}")
 
-		public ResponseEntity<Restaurant> findRestaurantByExactlyDishName(@PathVariable("name") String name) {
+	// Find Restaurant by exactly Dish Name
+	@GetMapping("/restaurant/menu/dish/{name}")
+
+	public ResponseEntity<Restaurant> findRestaurantByExactlyDishName(@PathVariable("name") String name) {
 		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByExactlyDishName(name);
-	 
-			if (restaurantData.isPresent()) {
-				return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-			}
+
+		if (restaurantData.isPresent()) {
+			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	// Find top User by amount on spesific date
+	@GetMapping("/restaurant/customer/amount/{dateFrom}/{dateTo}/{maxcustomer}")
+
+	public ResponseEntity<CustomerData> findXUserBySpesificDate(@PathVariable("dateFrom") String dateFrom,
+			@PathVariable("dateTo") String dateTo, @PathVariable("maxcustomer") String maxCustomer) {
+		Optional<CustomerData> restaurantData = customerService.findUserBySpesificDate(dateFrom, dateTo, maxCustomer);
+
+		if (restaurantData.isPresent()) {
+			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
+	}
+
+	// Find most popular Restaurant
+	@GetMapping("/restaurant/popular/")
+	public ResponseEntity<List<RestaurantPopularData>> getPopularRestaurant() {
+		try {
+			List<RestaurantPopularData> restaurantLists = new ArrayList<RestaurantPopularData>();
+
+			restaurantService.findByPopularRestaurant().forEach(restaurantLists::add);
+
+			if (restaurantLists.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<>(restaurantLists, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.melalietest.rana.assessment.model.Restaurant;
+import com.melalietest.rana.assessment.staging.RestaurantPopularData;
 
 /**
  * @author anitamarsafira
@@ -31,7 +32,14 @@ public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
 	Optional<Restaurant> findRestaurantByOperasionalHours(String datetime);
 
 	@Query("Select n from restaurant n join restaurantmenu o on n.id = o.restaurantid where o.restaurantmenuname=?1")
-
 	Optional<Restaurant> findRestaurantByExactlyDishName(String name);
+
+	
+	@Query("Select o.restaurantId, n.restaurantname, count(o.amount) as sumAmount, count(o.id) as sumPurchase "
+			+ "from restaurant n join purchase o on n.id = o.restaurantId"
+			+ " group by o.restaurantId, n.restaurantname "
+			+ "order by sumPurchase,sumAmount "
+			+ "asc ")
+	Iterable<RestaurantPopularData> findByPopularRestaurant();
 
 }

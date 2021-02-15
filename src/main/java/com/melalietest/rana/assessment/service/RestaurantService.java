@@ -14,6 +14,7 @@ import com.melalietest.rana.assessment.model.Purchase;
 import com.melalietest.rana.assessment.model.Restaurant;
 import com.melalietest.rana.assessment.model.RestaurantMenu;
 import com.melalietest.rana.assessment.staging.RestaurantData;
+import com.melalietest.rana.assessment.staging.RestaurantPopularData;
 
 /**
  * @author anitamarsafira
@@ -41,6 +42,8 @@ public interface RestaurantService {
 	Optional<RestaurantData> findRestaurantOrDishByName(String name);
 
 	Optional<Restaurant> findRestaurantByExactlyDishName(String name);
+
+	Iterable<RestaurantPopularData> findByPopularRestaurant();
 
 
 }
