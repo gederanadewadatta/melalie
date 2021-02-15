@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.melalietest.rana.assessment.repository.*;
 import com.melalietest.rana.assessment.model.*;
 import com.melalietest.rana.assessment.service.RestaurantService;
+import com.melalietest.rana.assessment.staging.RestaurantData;
 
 /**
  * @author anitamarsafira
@@ -21,7 +22,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 	@Autowired
 	RestaurantRepository restaurantRepo;
 //	@Autowired
-//	RestaurantMenuRepository restaurantMenuRepo;
+	RestaurantMenuRepository restaurantMenuRepo;
 	@Autowired
 	PurchaseRepository purchaseRepo;
 
@@ -67,6 +68,25 @@ public class RestaurantServiceImpl implements RestaurantService {
 	public Optional<Restaurant> findRestaurantByOperasionalHours(String datetime) {
 		// TODO Auto-generated method stub
 		return restaurantRepo.findRestaurantByOperasionalHours(datetime);
+	}
+
+	@Override
+	public List<RestaurantMenu> findRestaurantByPriceRange(int priceFrom, int priceTo) {
+		// TODO Auto-generated method stub
+		
+		return restaurantMenuRepo.findRestaurantByPriceRange(priceFrom,priceTo);
+	}
+
+	@Override
+	public Optional<RestaurantData> findRestaurantOrDishByName(String name) {
+		// TODO Auto-generated method stub
+		return restaurantMenuRepo.findRestaurantOrDishByName(name);
+	}
+
+	@Override
+	public Optional<Restaurant> findRestaurantByExactlyDishName(String name) {
+		// TODO Auto-generated method stub
+		return restaurantRepo.findRestaurantByExactlyDishName(name);
 	}
 
 }

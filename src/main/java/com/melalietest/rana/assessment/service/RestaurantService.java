@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.melalietest.rana.assessment.model.Purchase;
 import com.melalietest.rana.assessment.model.Restaurant;
+import com.melalietest.rana.assessment.model.RestaurantMenu;
+import com.melalietest.rana.assessment.staging.RestaurantData;
 
 /**
  * @author anitamarsafira
@@ -34,6 +36,12 @@ public interface RestaurantService {
 	Optional<Restaurant> findRestaurantByCustLocation(String location);
 
 	Optional<Restaurant> findRestaurantByOperasionalHours(String datetime);
+
+	List<RestaurantMenu> findRestaurantByPriceRange(int priceFrom, int priceTo);
+
+	Optional<RestaurantData> findRestaurantOrDishByName(String name);
+
+	Optional<Restaurant> findRestaurantByExactlyDishName(String name);
 
 
 }

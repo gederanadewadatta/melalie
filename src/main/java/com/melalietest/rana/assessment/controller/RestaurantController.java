@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.melalietest.rana.assessment.model.*;
 import com.melalietest.rana.assessment.service.CustomerService;
 import com.melalietest.rana.assessment.service.RestaurantService;
+import com.melalietest.rana.assessment.staging.RestaurantData;
 
 @RestController
 @RequestMapping("/api")
@@ -70,7 +71,8 @@ public class RestaurantController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-	//Find based on Operasional Hours
+
+	// Find based on Operasional Hours
 	@GetMapping("/restaurants/operasional/{datetime}")
 	public ResponseEntity<Restaurant> findRestaurantByOperasionalHours(@PathVariable("datetime") String datetime) {
 		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByOperasionalHours(datetime);
@@ -81,22 +83,11 @@ public class RestaurantController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
-		
-	// Find based on User Location
-    @GetMapping("/restaurant/customer/location/{location}")
-    public ResponseEntity<Restaurant> findRestaurantByCustLocation(@PathVariable("location") String location) {
-    	Optional<Restaurant> restaurantData = restaurantService.findRestaurantByCustLocation(location);
 
-		if (restaurantData.isPresent()) {
-			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
-		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-    }
-	// Find based on Date Time
-	@GetMapping("/restaurant/open/{datetimefrom}/{datetimeto}")
-	public ResponseEntity<Restaurant> findRestaurantByOpenFromAndOpenTo(@PathVariable("datetimefrom") long openFrom,@PathVariable("datetimeto") long openTo) {
-		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByOpenFromAndOpenTo(openFrom,openTo);
+	// Find based on User Location
+	@GetMapping("/restaurant/customer/location/{location}")
+	public ResponseEntity<Restaurant> findRestaurantByCustLocation(@PathVariable("location") String location) {
+		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByCustLocation(location);
 
 		if (restaurantData.isPresent()) {
 			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
@@ -104,6 +95,64 @@ public class RestaurantController {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
+
+	// Find based on Date Time
+	@GetMapping("/restaurant/open/{datetimefrom}/{datetimeto}")
+	public ResponseEntity<Restaurant> findRestaurantByOpenFromAndOpenTo(@PathVariable("datetimefrom") long openFrom,
+			@PathVariable("datetimeto") long openTo) {
+		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByOpenFromAndOpenTo(openFrom, openTo);
+
+		if (restaurantData.isPresent()) {
+			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	// Find based on Price Range
+	@GetMapping("/restaurant/price/{priceFrom}/{priceFrom}")
+	public ResponseEntity<Restaurant> findRestaurantByPriceRange(@PathVariable("priceFrom") int priceFrom,
+			@PathVariable("priceTo") int priceTo) {
+
+		List<RestaurantMenu> restaurantMenuData = restaurantService.findRestaurantByPriceRange(priceFrom, priceTo);
+		Optional<Restaurant> restaurantData = null;
+		if (!restaurantMenuData.isEmpty()) {
+			for (RestaurantMenu restaurantMenu : restaurantMenuData) {
+				restaurantData = restaurantService.findById(restaurantMenu.getId());
+			}
+		}
+
+		if (restaurantData.isPresent()) {
+			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	// Find Restaurant or Dish by Name
+	@GetMapping("/restaurant/menu/{name}")
+
+	public ResponseEntity<RestaurantData> findRestaurantOrDishByName(@PathVariable("name") String name) {
+		Optional<RestaurantData> restaurantData = restaurantService.findRestaurantOrDishByName(name);
+ 
+		if (restaurantData.isPresent()) {
+			return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
+	// Find Restaurant by exactly Dish Name
+		@GetMapping("/restaurant/menu/dish/{name}")
+
+		public ResponseEntity<Restaurant> findRestaurantByExactlyDishName(@PathVariable("name") String name) {
+		Optional<Restaurant> restaurantData = restaurantService.findRestaurantByExactlyDishName(name);
+	 
+			if (restaurantData.isPresent()) {
+				return new ResponseEntity<>(restaurantData.get(), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+		}
 
 }

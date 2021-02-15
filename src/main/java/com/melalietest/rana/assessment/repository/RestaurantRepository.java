@@ -30,4 +30,8 @@ public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
 	@Query("SELECT n FROM restaurant n WHERE n.restaurantBusinessHoursClose-n.restaurantBusinessHoursOpen = ?1")
 	Optional<Restaurant> findRestaurantByOperasionalHours(String datetime);
 
+	@Query("Select n from restaurant n join restaurantmenu o on n.id = o.restaurantid where o.restaurantmenuname=?1")
+
+	Optional<Restaurant> findRestaurantByExactlyDishName(String name);
+
 }
